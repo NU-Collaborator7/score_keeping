@@ -1,0 +1,17 @@
+{
+	"name":				"Score Keeping",
+	"short_name":		"Score Keeping",
+	"description":		"Score Keeping",
+	"start_url":		"/score_keeping/",
+	"display":			"standalone",
+	"orientation":		"any",
+	"background_color":	"#fff",
+	"theme_color":		"#fff",
+	"icons": [
+		{
+			"src": "favicon.png",
+			"sizes": "36x36",
+			"type": "image/png"
+		}
+	]
+}

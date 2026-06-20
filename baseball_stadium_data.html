@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>球場一覧</title>
+    <style>
+        body {
+            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+            margin: 20px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        .filter-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+        .filter-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .filter-item label {
+            font-weight: bold;
+            font-size: 0.9em;
+            color: #555;
+        }
+        .filter-item input, .filter-item select {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .table-wrapper {
+            overflow-x: auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            white-space: nowrap;
+            font-size: 14px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2c3e50;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #e8f4fd;
+        }
+        .num {
+            text-align: right;
+        }
+        .center {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="filter-container">
+        <div class="filter-item">
+            <label for="searchWord">フリーワード検索</label>
+            <input type="text" id="searchWord" placeholder="球場名、都道府県など..." oninput="filterTable()">
+        </div>
+        <div class="filter-item">
+            <label for="categoryFilter">カテゴリー</label>
+            <select id="categoryFilter" onchange="filterTable()">
+                <option value="">すべて</option>
+                <option value="1軍本拠地">1軍本拠地</option>
+                <option value="準本拠地">準本拠地</option>
+                <option value="2軍本拠地">2軍本拠地</option>
+                <option value="地方球場">地方球場</option>
+            </select>
+        </div>
+        <div class="filter-item">
+            <label for="turfFilter">外野の種類</label>
+            <select id="turfFilter" onchange="filterTable()">
+                <option value="">すべて</option>
+                <option value="天然芝">天然芝</option>
+                <option value="人工芝">人工芝</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="table-wrapper">
+        <table id="stadiumTable">
+            <thead>
+                <tr>
+                    <th>球場名</th>
+                    <th>球団名</th>
+                    <th>球団カテゴリー</th>
+                    <th class="num">中堅 (m)</th>
+                    <th class="num">左翼 (m)</th>
+                    <th class="num">右翼 (m)</th>
+                    <th class="num">左中間 (m)</th>
+                    <th class="num">右中間 (m)</th>
+                    <th class="num">本塁後方 (m)</th>
+                    <th>内野の種類</th>
+                    <th>外野の種類</th>
+                    <th class="num">席数</th>
+                    <th>住所</th>
+                    <th>最寄駅</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>エスコンフィールドHOKKAIDO</td><td>日本ハム</td><td>1軍本拠地</td><td class="num">121</td><td class="num">97</td><td class="num">99</td><td class="num">115</td><td class="num">115</td><td class="num">15</td><td>天然芝</td><td>天然芝</td><td class="num">35,000</td><td>北海道北広島市Fビレッジ1</td><td>北広島駅</td></tr>
+                <tr><td>楽天モバイルパーク宮城</td><td>楽天</td><td>1軍本拠地</td><td class="num">122</td><td class="num">100.1</td><td class="num">100.1</td><td class="num">116</td><td class="num">116</td><td class="num">18.3</td><td>人工芝</td><td>人工芝</td><td class="num">30,508</td><td>宮城県仙台市宮城野区宮城野2-11-1</td><td>宮城野原駅</td></tr>
+                <tr><td>ベルーナドーム</td><td>西武</td><td>1軍本拠地</td><td class="num">122</td><td class="num">100</td><td class="num">100</td><td class="num">116</td><td class="num">116</td><td class="num">18.3</td><td>人工芝</td><td>人工芝</td><td class="num">31,552</td><td>埼玉県所沢市上山口2135</td><td>西武球場前駅</td></tr>
+                <tr><td>ZOZOマリンスタジアム</td><td>ロッテ</td><td>1軍本拠地</td><td class="num">122</td><td class="num">99.5</td><td class="num">99.5</td><td class="num">116.3</td><td class="num">116.3</td><td class="num">19.5</td><td>人工芝</td><td>人工芝</td><td class="num">29,916</td><td>千葉県千葉市美浜区美浜1</td><td>海浜幕張駅</td></tr>
+                <tr><td>京セラドーム大阪</td><td>オリックス</td><td>1軍本拠地</td><td class="num">122</td><td class="num">100</td><td class="num">100</td><td class="num">116</td><td class="num">116</td><td class="num">18.3</td><td>人工芝</td><td>人工芝</td><td class="num">36,154</td><td>大阪府大阪市西区千代崎3-中2-1</td><td>ドーム前千代崎駅 / 大正駅</td></tr>
+                <tr><td>みずほPayPayドーム福岡</td><td>ソフトバンク</td><td>1軍本拠地</td><td class="num">122</td><td class="num">100</td><td class="num">100</td><td class="num">116</td><td class="num">116</td><td class="num">18.3</td><td>人工芝</td><td>人工芝</td><td class="num">40,062</td><td>福岡県福岡市中央区地行浜2-2-2</td><td>唐人町駅</td></tr>
+                <tr><td>東京ドーム</td><td>巨人</td><td>1軍本拠地</td><td class="num">122</td><td class="num">100</td><td class="num">100</td><td class="num">110</td><td class="num">110</td><td class="num">18.3</td><td>人工芝</td><td>人工芝</td><td class="num">43,500</td><td>東京都文京区後楽1-3-61</td><td>後楽園駅 / 水道橋駅</td></tr>
+                <tr><td>明治神宮野球場</td><td>ヤクルト</td><td>1軍本拠地</td><td class="num">120</td><td class="num">97.5</td><td class="num">97.5</td><td class="num">112.3</td><td class="num">112.3</td><td class="num">18.3</td><td>人工芝</td><td>人工芝</td><td class="num">30,969</td><td>東京都新宿区霞ヶ丘町3-1</td><td>外苑前駅 / 信濃町駅</td></tr>
+                <tr><td>横浜スタジアム</td><td>DeNA</td><td>1軍本拠地</td><td class="num">117.7</td><td class="num">94.2</td><td class="num">94.2</td><td class="num">111.4</td><td class="num">111.4</td><td class="num">18.3</td><td>人工芝</td><td>人工芝</td><td class="num">34,046</td><td>神奈川県横浜市中区横浜公園</td><td>関内駅 / 日本大通り駅</td></tr>
+                <tr><td>バンテリンドーム ナゴヤ</td><td>中日</td><td>1軍本拠地</td><td class="num">122</td><td class="num">100</td><td class="num">100</td><td class="num">116</td><td class="num">116</td><td class="num">18.3</td><td>人工芝</td><td>人工芝</td><td class="num">36,370</td><td>愛知県名古屋市東区大幸南1-1-1</td><td>ナゴヤドーム前矢田駅</td></tr>
+                <tr><td>阪神甲子園球場</td><td>阪神</td><td>1軍本拠地</td><td class="num">118</td><td class="num">95</td><td class="num">95</td><td class="num">118</td><td class="num">118</td><td class="num">17.5</td><td>黒土</td><td>天然芝</td><td class="num">47,400</td><td>兵庫県西宮市甲子園町1-82</td><td>甲子園駅</td></tr>
+                <tr><td>MAZDA Zoom-Zoom スタジアム広島</td><td>広島</td><td>1軍本拠地</td><td class="num">122</td><td class="num">101</td><td class="num">100</td><td class="num">116</td><td class="num">116</td><td class="num">18.3</td><td>天然芝</td><td>天然芝</td><td class="num">33,000</td><td>広島県広島市南区南蟹屋2-3-1</td><td>広島駅</td></tr>
+                <tr><td>ほっともっとフィールド神戸</td><td>オリックス</td><td>準本拠地</td><td class="num">122</td><td class="num">99.1</td><td class="num">99.1</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td>天然芝</td><td>天然芝</td><td class="num">35,000</td><td>兵庫県神戸市須磨区緑台3251-10</td><td>総合運動公園駅</td></tr>
+                <tr><td>鎌ケ谷スタジアム</td><td>日本ハム</td><td>2軍本拠地</td><td class="num">122</td><td class="num">100</td><td class="num">100</td><td class="num">-</td><td class="num">-</td><td class="num">19</td><td>土</td><td>天然芝</td><td class="num">2,400</td><td>千葉県鎌ケ谷市中沢459</td><td>鎌ヶ谷駅 / 新鎌ヶ谷駅</td></tr>
+                <tr><td>ウェルファムフーズ森林どりスタジアム泉</td><td>楽天</td><td>2軍本拠地</td><td class="num">122</td><td class="num">100</td><td class="num">100</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td>土</td><td>人工芝</td><td class="num">-</td><td>宮城県仙台市泉区明通1-1-2</td><td>泉中央駅 バス</td></tr>
+                <tr><td>CAR321フィールド</td><td>西武</td><td>2軍本拠地</td><td class="num">122</td><td class="num">100</td><td class="num">100</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td>人工芝</td><td>人工芝</td><td class="num">243</td><td>埼玉県所沢市上山口2135</td><td>西武球場前駅</td></tr>
+                <tr><td>ロッテ浦和球場</td><td>ロッテ</td><td>2軍本拠地</td><td class="num">122</td><td class="num">96</td><td class="num">96</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td>土</td><td>天然芝</td><td class="num">-</td><td>埼玉県さいたま市南区鹿手袋1-11-2</td><td>武蔵浦和駅</td></tr>
+                <tr><td>杉本商事バファローズスタジアム舞洲</td><td>オリックス</td><td>2軍本拠地</td><td class="num">122</td><td class="num">100</td><td class="num">100</td><td class="num">116</td><td class="num">116</td><td class="num">18.3</td><td>人工芝</td><td>人工芝</td><td class="num">500</td><td>大阪府大阪市此花区北港緑地2-2-65</td><td>コスモスクエア駅 バス</td></tr>
+                <tr><td>タマホーム スタジアム筑後</td><td>ソフトバンク</td><td>2軍本拠地</td><td class="num">122</td><td class="num">100</td><td class="num">100</td><td class="num">116</td><td class="num">116</td><td class="num">18.3</td><td>人工芝</td><td>人工芝</td><td class="num">3,117</td><td>福岡県筑後市津島島津752-1</td><td>筑後船小屋駅</td></tr>
+                <tr><td>ジャイアンツタウンスタジアム</td><td>巨人</td><td>2軍本拠地</td><td class="num">122</td><td class="num">100</td><td class="num">100</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td>人工芝</td><td>人工芝</td><td class="num">2,900</td><td>東京都稲城市矢野口3228</td><td>京王よみうりランド駅 / 稲城駅</td></tr>
+                <tr><td>ヤクルト戸田球場</td><td>ヤクルト</td><td>2軍本拠地</td><td class="num">122</td><td class="num">100</td><td class="num">100</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td>土</td><td>天然芝</td><td class="num">-</td><td>埼玉県>戸田市美女木南2-2</td><td>武蔵浦和駅 バス</td></tr>
+                <tr><td>横須賀スタジアム</td><td>DeNA</td><td>2軍本拠地</td><td class="num">122</td><td class="num">98</td><td class="num">98</td><td class="num">115</td><td class="num">115</td><td class="num">18.5</td><td>人工芝</td><td>人工芝</td><td class="num">5,000</td><td>神奈川県横須賀市夏島町2</td><td>追浜駅</td></tr>
+                <tr><td>ナゴヤ球場</td><td>中日</td><td>2軍本拠地</td><td class="num">122</td><td class="num">100</td><td class="num">100</td><td class="num">116</td><td class="num">116</td><td class="num">18.3</td><td>土</td><td>天然芝</td><td class="num">4,465</td><td>愛知県名古屋市中川区露橋2-12-1</td><td>ナゴヤ球場前駅 / 尾頭橋駅</td></tr>
+                <tr><td>日鉄鋼板SGLスタジアム尼崎</td><td>阪神</td><td>2軍本拠地</td><td class="num">118</td><td class="num">95</td><td class="num">95</td><td class="num">118</td><td class="num">118</td><td class="num">17.5</td><td>黒土</td><td>天然芝</td><td class="num">3,600</td><td>兵庫県尼崎市大物町1-1</td><td>大物駅 / 東鳴尾駅</td></tr>
+                <tr><td>由宇練習場</td><td>広島</td><td>2軍本拠地</td><td class="num">122</td><td class="num">100</td><td class="num">100</td><td class="num">116</td><td class="num">116</td><td class="num">18.3</td><td>土</td><td>天然芝</td><td class="num">-</td><td>山口県岩国市由宇町笠塚72-2</td><td>由宇駅 タクシー</td></tr>
+                <tr><td>豊中ローズ球場</td><td>-</td><td>地方球場</td><td class="num">115</td><td class="num">95</td><td class="num">95</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td>土</td><td>人工芝</td><td class="num">2,002</td><td>大阪府豊中市曽根南町1-4-2</td><td>曽根駅 / 服部天神駅</td></tr>
+                <tr><td>どらドラパーク米子市民球場</td><td>-</td><td>地方球場</td><td class="num">120</td><td class="num">92</td><td class="num">92</td><td class="num">112</td><td class="num">112</td><td class="num">-</td><td>黒土</td><td>天然芝</td><td class="num">16,000</td><td>鳥取県米子市車尾663-1</td><td>東山公園駅</td></tr>
+                <tr><td>レクザムボールパーク丸亀</td><td>-</td><td>地方球場</td><td class="num">122</td><td class="num">100</td><td class="num">100</td><td class="num">116</td><td class="num">116</td><td class="num">-</td><td>黒土</td><td>天然芝</td><td class="num">10,000</td><td>香川県丸亀市金倉町975</td><td>金蔵寺駅</td></tr>
+                <tr><td>ウインク球場 姫路市立姫路球場</td><td>-</td><td>地方球場</td><td class="num">120</td><td class="num">95</td><td class="num">95</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td>土</td><td>天然芝</td><td class="num">14,000</td><td>兵庫県姫路市飯田540</td><td>飾磨駅</td></tr>
+                <tr><td>マスカットスタジアム</td><td>-</td><td>地方球場</td><td class="num">122</td><td class="num">99.5</td><td class="num">99.5</td><td class="num">116</td><td class="num">116</td><td class="num">18.3</td><td>黒土</td><td>天然芝</td><td class="num">30,494</td><td>岡山県倉敷市中庄3250-1</td><td>中庄駅</td></tr>
+                <tr><td>HARD OFF ECOスタジアム新潟</td><td>オイシックス新潟アルビレックスBC</td><td>2軍本拠地</td><td class="num">122</td><td class="num">100</td><td class="num">100</td><td class="num">116</td><td class="num">116</td><td class="num">18.3</td><td>人工芝</td><td>人工芝</td><td class="num">30,000</td><td>新潟県新潟市中央区長潟570</td><td>新潟駅 バス</td></tr>
+                <tr><td>紀三井寺公園野球場</td><td>-</td><td>地方球場</td><td class="num">120</td><td class="num">98</td><td class="num">98</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td>土</td><td>天然芝</td><td class="num">15,223</td><td>和歌山県和歌山市毛見200</td><td>紀三井寺駅</td></tr>
+                <tr><td>沖縄セルラースタジアム那覇</td><td>-</td><td>地方球場</td><td class="num">122</td><td class="num">100</td><td class="num">100</td><td class="num">116</td><td class="num">116</td><td class="num">18.3</td><td>土</td><td>天然芝</td><td class="num">30,000</td><td>沖縄県那覇市奥武山町42-1</td><td>奥武山公園駅</td></tr>
+                <tr><td>坊っちゃんスタジアム</td><td>-</td><td>地方球場</td><td class="num">122</td><td class="num">99.5</td><td class="num">99.5</td><td class="num">116</td><td class="num">116</td><td class="num">18.3</td><td>土</td><td>天然芝</td><td class="num">30,000</td><td>愛媛県松山市市坪西町625-1</td><td>市坪駅</td></tr>
+                <tr><td>アルペンスタジアム</td><td>-</td><td>地方球場</td><td class="num">122</td><td class="num">99.5</td><td class="num">99.5</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td>人工芝</td><td>人工芝</td><td class="num">30,033</td><td>富山県富山市下飯野30-1</td><td>東富山駅</td></tr>
+                <tr><td>長崎ビッグNスタジアム</td><td>-</td><td>地方球場</td><td class="num">122</td><td class="num">99.5</td><td class="num">99.5</td><td class="num">116</td><td class="num">116</td><td class="num">-</td><td>土</td><td>天然芝</td><td class="num">25,000</td><td>長崎県長崎市松山町2-5</td><td>平和公園停留場</td></tr>
+                <tr><td>リブワーク藤崎台球場</td><td>-</td><td>地方球場</td><td class="num">120</td><td class="num">99</td><td class="num">99</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td>土</td><td>天然芝</td><td class="num">24,000</td><td>熊本県熊本市中央区宮内2-46</td><td>段山町停留場</td></tr>
+                <tr><td>ひなたサンマリンスタジアム宮崎</td><td>-</td><td>地方球場</td><td class="num">122</td><td class="num">100</td><td class="num">100</td><td class="num">116</td><td class="num">116</td><td class="num">18.3</td><td>天然芝</td><td>天然芝</td><td class="num">30,000</td><td>宮崎県宮崎市熊野1443-12</td><td>木花駅</td></tr>
+                <tr><td>こまちスタジアム</td><td>-</td><td>地方球場</td><td class="num">122</td><td class="num">100</td><td class="num">100</td><td class="num">116</td><td class="num">116</td><td class="num">18.3</td><td>人工芝</td><td>人工芝</td><td class="num">25,000</td><td>秋田県秋田市新屋町字砂奴寄4-6</td><td>新屋駅</td></tr>
+                <tr><td>荘銀・日新スタジアム</td><td>-</td><td>地方球場</td><td class="num">122</td><td class="num">97.6</td><td class="num">97.6</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td>土</td><td>天然芝</td><td class="num">25,000</td><td>山形県東村山郡中山町長崎5081</td><td>羽前長崎駅</td></tr>
+                <tr><td>県営あづま球場</td><td>-</td><td>地方球場</td><td class="num">122</td><td class="num">100</td><td class="num">100</td><td class="num">116</td><td class="num">116</td><td class="num">-</td><td>人工芝</td><td>人工芝</td><td class="num">30,000</td><td>福島県福島市佐原字神事場1</td><td>福島駅 バス</td></tr>
+                <tr><td>上毛新聞敷島球場</td><td>-</td><td>地方球場</td><td class="num">122</td><td class="num">99.5</td><td class="num">99.5</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td>土</td><td>天然芝</td><td class="num">20,499</td><td>群馬県前橋市敷島町66</td><td>前橋駅 バス</td></tr>
+                <tr><td>宇都宮清原球場</td><td>-</td><td>地方球場</td><td class="num">122</td><td class="num">97.6</td><td class="num">97.6</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td>土</td><td>天然芝</td><td class="num">30,000</td><td>栃木県宇都宮市清原工業団地14</td><td>清原地区市民センター前</td></tr>
+                <tr><td>ひたちなか市民球場</td><td>-</td><td>地方球場</td><td class="num">122</td><td class="num">100</td><td class="num">100</td><td class="num">116</td><td class="num">116</td><td class="num">-</td><td>土</td><td>天然芝</td><td class="num">25,000</td><td>茨城県ひたちなか市新光町49</td><td>勝田駅 バス</td></tr>
+                <tr><td>草薙球場</td><td>-</td><td>地方球場</td><td class="num">122</td><td class="num">100</td><td class="num">100</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td>土</td><td>天然芝</td><td class="num">21,656</td><td>静岡県静岡市駿河区栗原19-1</td><td>県総合運動場駅</td></tr>
+                <tr><td>長野オリンピックスタジアム</td><td>-</td><td>地方球場</td><td class="num">122</td><td class="num">99.5</td><td class="num">99.5</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td>土</td><td>天然芝</td><td class="num">30,000</td><td>長野県長野市篠ノ井東福寺320</td><td>篠ノ井駅 バス</td></tr>
+                <tr><td>長良川球場</td><td>-</td><td>地方球場</td><td class="num">122</td><td class="num">97.6</td><td class="num">97.6</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td>土</td><td>天然芝</td><td class="num">29,282</td><td>岐阜県岐阜市福光大野2675-28</td><td>岐阜駅 バス</td></tr>
+                <tr><td>わかさスタジアム京都</td><td>-</td><td>地方球場</td><td class="num">117</td><td class="num">97.6</td><td class="num">97.6</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td>土</td><td>天然芝</td><td class="num">20,000</td><td>京都府京都市右京区西京極新明町29</td><td>西京極駅</td></tr>
+                <tr><td>スタルヒン球場 旭川</td><td>-</td><td>地方球場</td><td class="num">120</td><td class="num">98</td><td class="num">98</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td>土</td><td>天然芝</td><td class="num">25,000</td><td>北海道旭川市花咲町3</td><td>旭川駅 バス</td></tr>
+                <tr><td>帯広の森野球場</td><td>-</td><td>地方球場</td><td class="num">122</td><td class="num">97.6</td><td class="num">97.6</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td>土</td><td>天然芝</td><td class="num">23,000</td><td>北海道帯広市南町南7線</td><td>帯広駅 バス</td></tr>
+                <tr><td>函館オーシャンスタジアム</td><td>-</td><td>地方球場</td><td class="num">122</td><td class="num">99.1</td><td class="num">99.1</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td>土</td><td>人工芝</td><td class="num">20,000</td><td>北海道函館市千代台町22-24</td><td>千代台停留場</td></tr>
+                <tr><td>はるか夢球場</td><td>-</td><td>地方球場</td><td class="num">122</td><td class="num">100</td><td class="num">100</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td>黒土</td><td>天然芝</td><td class="num">15,016</td><td>青森県弘前市豊田2-3</td><td>運動公園前駅</td></tr>
+                <tr><td>きたぎんボールパーク</td><td>-</td><td>地方球場</td><td class="num">122</td><td class="num">100</td><td class="num">100</td><td class="num">116</td><td class="num">116</td><td class="num">18.3</td><td>人工芝</td><td>人工芝</td><td class="num">20,000</td><td>岩手県盛岡市永井7地割16-2</td><td>岩手飯岡駅</td></tr>
+                <tr><td>石川県立野球場</td><td>-</td><td>地方球場</td><td class="num">122</td><td class="num">97.5</td><td class="num">97.5</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td>土</td><td>天然芝</td><td class="num">18,172</td><td>石川県金沢市北塚町東191</td><td>金沢駅 バス</td></tr>
+                <tr><td>福井県營球場</td><td>-</td><td>地方球場</td><td class="num">122</td><td class="num">92</td><td class="num">92</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td>土</td><td>天然芝</td><td class="num">22,000</td><td>福井県福井市福町3-20</td><td>福井駅 バス</td></tr>
+                <tr><td>県營大宮球場</td><td>-</td><td>地方球場</td><td class="num">122</td><td class="num">99</td><td class="num">99</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td>土</td><td>天然芝</td><td class="num">20,500</td><td>埼玉県さいたま市大宮区高鼻町4</td><td>大宮公園駅 / 北大宮駅</td></tr>
+                <tr><td>バッティングパレス相石スタジアムひらつか</td><td>-</td><td>地方球場</td><td class="num">122</td><td class="num">95</td><td class="num">95</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td>土</td><td>天然芝</td><td class="num">16,000</td><td>神奈川県平塚市大原1-1</td><td>平塚駅 バス</td></tr>
+                <tr><td>サーティーフォー相模原球場</td><td>-</td><td>地方球場</td><td class="num">122</td><td class="num">95</td><td class="num">95</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td>土</td><td>天然芝</td><td class="num">16,000</td><td>神奈川県相模原市中央区弥栄3-1-6</td><td>淵野辺駅 バス</td></tr>
+                <tr><td>マイネットスタジアム皇子山</td><td>-</td><td>地方球場</td><td class="num">122</td><td class="num">100</td><td class="num">100</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td>土</td><td>天然芝</td><td class="num">15,200</td><td>滋賀県大津市御陵町4-1</td><td>大津市役所前駅</td></tr>
+                <tr><td>ちゅ〜るスタジアム清水</td><td>ハヤテベンチャーズ静岡</td><td>2軍本拠地</td><td class="num">122</td><td class="num">100</td><td class="num">100</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td>土</td><td>天然芝</td><td class="num">10,000</td><td>静岡県静岡市清水区庵原町1484-1</td><td>清水駅 バス</td></tr>
+                <tr><td>四日市市営かすみ防災パワースタジアム</td><td>-</td><td>地方球場</td><td class="num">120</td><td class="num">99.1</td><td class="num">99.1</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td>土</td><td>天然芝</td><td class="num">10,000</td><td>三重県四日市市大字羽津甲5169</td><td>霞ヶ浦駅</td></tr>
+                <tr><td>レクザムスタジアム</td><td>-</td><td>地方球場</td><td class="num">122</td><td class="num">96</td><td class="num">96</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td>土</td><td>天然芝</td><td class="num">22,000</td><td>香川県高松市生島町614</td><td>高松駅 バス</td></tr>
+                <tr><td>オロナミンC球場</td><td>-</td><td>地方球場</td><td class="num">122</td><td class="num">99.1</td><td class="num">99.1</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td>土</td><td>天然芝</td><td class="num">22,000</td><td>徳島県鳴門市鳴門町三ツ石</td><td>鳴門駅 バス</td></tr>
+                <tr><td>高知県立春野運動公園野球場</td><td>-</td><td>地方球場</td><td class="num">122</td><td class="num">100</td><td class="num">100</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td>土</td><td>天然芝</td><td class="num">16,000</td><td>高知県高知市春野町芳原2485</td><td>高知駅 バス</td></tr>
+                <tr><td>北九州市民球場</td><td>-</td><td>地方球場</td><td class="num">119</td><td class="num">92</td><td class="num">92</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td>土</td><td>天然芝</td><td class="num">20,000</td><td>福岡県北九州市小倉北区三萩野2-10</td><td>香春口三萩野駅</td></tr>
+                <tr><td>さがみどりの森球場</td><td>-</td><td>地方球場</td><td class="num">122</td><td class="num">99.1</td><td class="num">99.1</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td>土</td><td>天然芝</td><td class="num">16,500</td><td>佐賀県佐賀市久保田町大字徳万1883</td><td>久保田駅</td></tr>
+                <tr><td>別大興産スタジアム</td><td>-</td><td>地方球場</td><td class="num">122</td><td class="num">100</td><td class="num">100</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td>黒土</td><td>天然芝</td><td class="num">30,000</td><td>大分県大分市大字西大分青葉町</td><td>西大分駅</td></tr>
+                <tr><td>平和リース球場</td><td>-</td><td>地方球場</td><td class="num">122</td><td class="num">98</td><td class="num">98</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td>土</td><td>天然芝</td><td class="num">21,000</td><td>鹿児島県鹿児島市鴨池2-22-1</td><td>鴨池停留場</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function filterTable() {
+            // 入力値の取得
+            const searchWord = document.getElementById("searchWord").value.toLowerCase();
+            const categoryFilter = document.getElementById("categoryFilter").value;
+            const turfFilter = document.getElementById("turfFilter").value;
+
+            const table = document.getElementById("stadiumTable");
+            const tr = table.getElementsByTagName("tr");
+
+            // テーブルの各行をループ処理（ヘッダーを除く）
+            for (let i = 1; i < tr.length; i++) {
+                const tds = tr[i].getElementsByTagName("td");
+                if (tds.length === 0) continue;
+
+                // 各データの抽出
+                const stadiumName = tds[0].textContent.toLowerCase();
+                const teamName = tds[1].textContent.toLowerCase();
+                const category = tds[2].textContent;
+                const turfType = tds[10].textContent; // 外野の種類
+                const address = tds[12].textContent.toLowerCase();
+
+                // フィルタ条件の判定
+                const matchesSearch = stadiumName.includes(searchWord) || teamName.includes(searchWord) || address.includes(searchWord);
+                const matchesCategory = categoryFilter === "" || category === categoryFilter;
+                const matchesTurf = turfFilter === "" || turfType.includes(turfFilter);
+
+                // すべての条件を満たす場合のみ表示
+                if (matchesSearch && matchesCategory && matchesTurf) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
